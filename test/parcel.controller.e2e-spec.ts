@@ -12,7 +12,7 @@ import { ParcelCreateDto } from '../src/features/parcel/application/model/parcel
 
 async function insertTestDataForQueryTesting(app: INestApplication<any>) {
   await request(app.getHttpServer())
-    .post('/parcel')
+    .post('/api/parcel')
     .send({
       stockKeepingUnit: 'SKU-01',
       description: 'desc1',
@@ -24,7 +24,7 @@ async function insertTestDataForQueryTesting(app: INestApplication<any>) {
     .expect(201);
 
   await request(app.getHttpServer())
-    .post('/parcel')
+    .post('/api/parcel')
     .send({
       stockKeepingUnit: 'SKU-02',
       description: 'desc2',
@@ -36,7 +36,7 @@ async function insertTestDataForQueryTesting(app: INestApplication<any>) {
     })
     .expect(201);
   await request(app.getHttpServer())
-    .post('/parcel')
+    .post('/api/parcel')
     .send({
       stockKeepingUnit: 'SKU-03',
       description: 'desc1',
@@ -47,7 +47,7 @@ async function insertTestDataForQueryTesting(app: INestApplication<any>) {
     })
     .expect(201);
   await request(app.getHttpServer())
-    .post('/parcel')
+    .post('/api/parcel')
     .send({
       stockKeepingUnit: 'SKU-04',
       description: 'desc2',
@@ -87,7 +87,7 @@ describe('ParcelController (e2e)', () => {
       country: 'Germany',
     });
     return request(app.getHttpServer())
-      .get('/parcels')
+      .get('/api/parcels')
       .expect(200)
       .expect((res) => {
         expect(Array.isArray(res.body)).toBe(true);
@@ -107,7 +107,7 @@ describe('ParcelController (e2e)', () => {
   it('/GET parcels - can search by country and description', async () => {
     await insertTestDataForQueryTesting(app);
     return request(app.getHttpServer())
-      .get('/parcels?country=Germany&description=desc1')
+      .get('/api/parcels?country=Germany&description=desc1')
       .expect(200)
       .expect((res) => {
         expect(Array.isArray(res.body)).toBe(true);
@@ -120,7 +120,7 @@ describe('ParcelController (e2e)', () => {
   it('/GET parcels - can search by country', async () => {
     await insertTestDataForQueryTesting(app);
     return request(app.getHttpServer())
-      .get('/parcels?country=Germany')
+      .get('/api/parcels?country=Germany')
       .expect(200)
       .expect((res) => {
         expect(Array.isArray(res.body)).toBe(true);
@@ -135,7 +135,7 @@ describe('ParcelController (e2e)', () => {
   it('/GET parcels - can search by description', async () => {
     await insertTestDataForQueryTesting(app);
     return request(app.getHttpServer())
-      .get('/parcels?description=desc1')
+      .get('/api/parcels?description=desc1')
       .expect(200)
       .expect((res) => {
         expect(Array.isArray(res.body)).toBe(true);
@@ -158,7 +158,7 @@ describe('ParcelController (e2e)', () => {
     };
 
     return request(app.getHttpServer())
-      .post('/parcel')
+      .post('/api/parcel')
       .send(parcelData)
       .expect(201)
       .expect((res) => {
@@ -185,11 +185,11 @@ describe('ParcelController (e2e)', () => {
     };
 
     await request(app.getHttpServer())
-      .post('/parcel')
+      .post('/api/parcel')
       .send(parcelData)
       .expect(201);
     return request(app.getHttpServer())
-      .get('/parcels')
+      .get('/api/parcels')
       .expect((res) => {
         expect(Array.isArray(res.body)).toBe(true);
         expect(res.body.length).toEqual(1);
@@ -215,11 +215,11 @@ describe('ParcelController (e2e)', () => {
       country: 'Estonia',
     };
     await request(app.getHttpServer())
-      .post('/parcel')
+      .post('/api/parcel')
       .send(parcelData)
       .expect(201);
     return await request(app.getHttpServer())
-      .post('/parcel')
+      .post('/api/parcel')
       .send(parcelData)
       .expect(400)
       .expect((res) => {
@@ -234,7 +234,7 @@ describe('ParcelController (e2e)', () => {
   it('/POST parcel - Empty values return bad request', () => {
     const parcelData = {};
     return request(app.getHttpServer())
-      .post('/parcel')
+      .post('/api/parcel')
       .send(parcelData)
       .expect(400)
       .expect((res) => {
@@ -271,7 +271,7 @@ describe('ParcelController (e2e)', () => {
     };
 
     return request(app.getHttpServer())
-      .post('/parcel')
+      .post('/api/parcel')
       .send(parcelData)
       .expect(201);
   });

@@ -20,7 +20,7 @@ describe('HealthController (e2e)', () => {
 
   it('/GET health - is OK', () => {
     return request(app.getHttpServer())
-      .get('/health')
+      .get('/api/health')
       .expect(200)
       .expect((res) => {
         expect(res.body.info.database.status).toEqual('up');
