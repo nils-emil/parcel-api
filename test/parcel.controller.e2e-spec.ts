@@ -10,7 +10,7 @@ import { ParcelRepository } from '../src/features/parcel/infrastructure/parcel.r
 import { mainConfig } from '../src/config/main.config';
 import { ParcelCreateDto } from '../src/features/parcel/application/model/parcel-create.dto.model';
 
-async function insertTestDataForQueryTesting(app: INestApplication<any>) {
+const insertTestDataForQueryTesting = async (app: INestApplication) => {
   await request(app.getHttpServer())
     .post('/api/parcel')
     .send({
@@ -57,7 +57,7 @@ async function insertTestDataForQueryTesting(app: INestApplication<any>) {
       country: 'Estonia',
     })
     .expect(201);
-}
+};
 
 describe('ParcelController (e2e)', () => {
   let app: INestApplication;
@@ -73,6 +73,10 @@ describe('ParcelController (e2e)', () => {
     await app.init();
     parcelEntityRepository = module.get(ParcelRepository, { strict: false });
     datasource = module.get(DataSource, { strict: false });
+    await datasource.createQueryBuilder().delete().from(ParcelEntity).execute();
+  });
+
+  afterEach(async () => {
     await datasource.createQueryBuilder().delete().from(ParcelEntity).execute();
   });
 
@@ -274,5 +278,36 @@ describe('ParcelController (e2e)', () => {
       .post('/api/parcel')
       .send(parcelData)
       .expect(201);
+  });
+
+  it('/GET /stock-keeping-unit/:stockKeepingUnit/is-valid - validation passes', () => {
+    return request(app.getHttpServer())
+      .get('/api/stock-keeping-unit/defo-unique-sku/is-valid')
+      .expect(200)
+      .expect((res) => {
+        const bodyAsBoolean = res.text === 'true';
+        expect(bodyAsBoolean).toEqual(true);
+      });
+  });
+
+  it('/GET /stock-keeping-unit/:stockKeepingUnit/is-valid - validation does not pass', async () => {
+    await request(app.getHttpServer())
+      .post('/api/parcel')
+      .send({
+        stockKeepingUnit: 'SKU-UNIQUE',
+        description: 'desc2',
+        deliveryDate: new Date('2024-03-17'),
+        street: '123 Main St',
+        town: 'Townsville 4',
+        country: 'Estonia',
+      })
+      .expect(201);
+    return request(app.getHttpServer())
+      .get('/api/stock-keeping-unit/SKU-UNIQUE/is-valid')
+      .expect(200)
+      .expect((res) => {
+        const bodyAsBoolean = res.text === 'true';
+        expect(bodyAsBoolean).toEqual(false);
+      });
   });
 });

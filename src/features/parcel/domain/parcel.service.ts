@@ -22,16 +22,23 @@ export class ParcelService {
   async createParcel(createCommand: CreateParcelCommand): Promise<Parcel> {
     const trackingId = this.parcelTrackingService.getNewTrackingId();
     const parcel = { ...createCommand.parcel, trackingId } as Parcel;
-    return this.parcelRepository.save(parcel);
+    return await this.parcelRepository.save(parcel);
+  }
+
+  async isStockKeepingUnitValid(stockKeepingUnit: string): Promise<boolean> {
+    const existingParcelsWithSameSku = await this.parcelRepository.findAll({
+      stockKeepingUnit,
+    });
+    return existingParcelsWithSameSku.length === 0;
   }
 
   async getValidationErrors(
     createCommand: CreateParcelCommand,
   ): Promise<string[]> {
-    const existingParcelsWithSameSku = await this.parcelRepository.findAll({
-      stockKeepingUnit: createCommand.parcel.stockKeepingUnit,
-    });
-    if (existingParcelsWithSameSku.length) {
+    const isStockKeepingUnitValid = await this.isStockKeepingUnitValid(
+      createCommand.parcel.stockKeepingUnit,
+    );
+    if (!isStockKeepingUnitValid) {
       return ['stockKeepingUnit value already exists'];
     }
     return [];

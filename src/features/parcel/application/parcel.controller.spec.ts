@@ -111,14 +111,24 @@ describe('ParcelController', () => {
       town: 'Townsville',
       country: 'Countryland',
     } as ParcelCreateDto;
-    const result = { trackingId: 'xxx' };
+    const result = {
+      stockKeepingUnit: 'SKU12345',
+      description: 'A parcel containing books',
+      deliveryDate: '2022-12-31',
+      street: '123 Main St',
+      town: 'Townsville',
+      country: 'Countryland',
+      trackingId: 'xxx',
+    };
 
     // @ts-ignore
     jest.spyOn(parcelService, 'createParcel').mockResolvedValue(result);
     // @ts-ignore
     jest.spyOn(parcelService, 'getValidationErrors').mockResolvedValue([]);
 
-    expect(parcelController.createParcel(parcelDto)).resolves.toBe(result);
+    expect(parcelController.createParcel(parcelDto)).resolves.toStrictEqual(
+      result,
+    );
   });
 
   it('should handle validation error for createParcel', () => {

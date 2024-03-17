@@ -4,6 +4,7 @@ import {
   Get,
   HttpException,
   HttpStatus,
+  Param,
   Post,
   Query,
 } from '@nestjs/common';
@@ -33,8 +34,15 @@ export class ParcelController {
     return parcels.map((parcel) => this.parcelMapper.mapToDto(parcel));
   }
 
+  @Get('/stock-keeping-unit/:stockKeepingUnit/is-valid')
+  async validateStockKeepingUnit(
+    @Param('stockKeepingUnit') stockKeepingUnit: string,
+  ): Promise<boolean> {
+    return await this.parcelService.isStockKeepingUnitValid(stockKeepingUnit);
+  }
+
   @Post('/parcel')
-  async createParcel(@Body() parcelDto: ParcelCreateDto) {
+  async createParcel(@Body() parcelDto: ParcelCreateDto): Promise<ParcelDto> {
     const createCommand = this.parcelCreateMapper.mapToCreateCommand(parcelDto);
     const validationErrors: string[] =
       await this.parcelService.getValidationErrors(createCommand);
@@ -51,6 +59,7 @@ export class ParcelController {
         },
       );
     }
-    return this.parcelService.createParcel(createCommand);
+    const parcel = await this.parcelService.createParcel(createCommand);
+    return this.parcelMapper.mapToDto(parcel);
   }
 }

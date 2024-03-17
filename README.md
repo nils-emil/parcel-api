@@ -24,6 +24,8 @@ Small project built with [Nest](https://github.com/nestjs/nest) framework.
     - The SKU uniqueness is checked, but during the check and the insert, another request could try to insert the same SKU.
       This is solved by using a unique constraint in the database, but could lead to a technical error instead of a
       validation error that is shown to the user.
+* Implement tracking ID uniqueness check
+    - The tracking ID is not checked for uniqueness. It should be. 
 * jest.spyOn
     - spyOn should have an optional third parameter, but it seems like the typing is not correct. So, ts-ignore was
       used.
