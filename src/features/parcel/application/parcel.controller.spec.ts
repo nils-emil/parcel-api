@@ -1,7 +1,7 @@
 import { ParcelController } from './parcel.controller';
 import { ParcelService } from '../domain/parcel.service';
 import { ParcelMapper } from './mapper/parcel-mapper.service';
-import { ParcelCreateCommandMapper } from './mapper/parcel-create-command-mapper.service';
+import { ParcelCommandMapper } from './mapper/parcel-create-command-mapper.service';
 import { QueryParcelCommand } from '../domain/model/command/query-parcel.command';
 import { ParcelCreateDto } from './model/parcel-create.dto.model';
 import { ParcelTrackingService } from '../domain/parce-tracking.service';
@@ -11,7 +11,7 @@ describe('ParcelController', () => {
   let parcelController: ParcelController;
   let parcelService: ParcelService;
   let parcelMapper: ParcelMapper;
-  let parcelCreateMapper: ParcelCreateCommandMapper;
+  let parcelCreateMapper: ParcelCommandMapper;
   let parcelTrackingService: ParcelTrackingService;
   let parcelRepository: ParcelRepository;
 
@@ -20,7 +20,7 @@ describe('ParcelController', () => {
     parcelRepository = new ParcelRepository({} as any, {} as any);
     parcelService = new ParcelService(parcelTrackingService, parcelRepository);
     parcelMapper = new ParcelMapper();
-    parcelCreateMapper = new ParcelCreateCommandMapper();
+    parcelCreateMapper = new ParcelCommandMapper();
     parcelController = new ParcelController(
       parcelService,
       parcelMapper,

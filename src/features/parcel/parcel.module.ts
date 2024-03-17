@@ -5,7 +5,7 @@ import { ParcelService } from './domain/parcel.service';
 import { ParcelTrackingService } from './domain/parce-tracking.service';
 import { ParcelRepositoryMapper } from './infrastructure/mapper/parcel-repository.mapper';
 import { ParcelRepository } from './infrastructure/parcel.repository';
-import { ParcelCreateCommandMapper } from './application/mapper/parcel-create-command-mapper.service';
+import { ParcelCommandMapper } from './application/mapper/parcel-create-command-mapper.service';
 import { ParcelEntity } from './infrastructure/model/parcel.entity';
 import { EntityClassOrSchema } from '@nestjs/typeorm/dist/interfaces/entity-class-or-schema.type';
 import { ParcelMapper } from './application/mapper/parcel-mapper.service';
@@ -18,7 +18,7 @@ import { ParcelMapper } from './application/mapper/parcel-mapper.service';
     ParcelRepositoryMapper,
     ParcelMapper,
     ParcelRepository,
-    ParcelCreateCommandMapper,
+    ParcelCommandMapper,
   ],
   controllers: [ParcelController],
 })

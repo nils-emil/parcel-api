@@ -1,11 +1,12 @@
 import { ParcelCreateDto } from '../model/parcel-create.dto.model';
-import { ParcelCreateCommandMapper } from './parcel-create-command-mapper.service';
+import { ParcelCommandMapper } from './parcel-create-command-mapper.service';
+import { ParcelQueryDto } from '../model/parcel-query-dto.model';
 
 describe('ParcelCreateCommandMapper', () => {
-  let mapper: ParcelCreateCommandMapper;
+  let mapper: ParcelCommandMapper;
 
   beforeEach(() => {
-    mapper = new ParcelCreateCommandMapper();
+    mapper = new ParcelCommandMapper();
   });
 
   it('should map ParcelCreateDto to CreateParcelCommand', () => {
@@ -18,7 +19,7 @@ describe('ParcelCreateCommandMapper', () => {
       country: 'Countryland',
     };
 
-    const command = mapper.mapToCommand(dto);
+    const command = mapper.mapToCreateCommand(dto);
 
     expect(command).toEqual({
       parcel: {
@@ -29,6 +30,20 @@ describe('ParcelCreateCommandMapper', () => {
         town: 'Townsville',
         country: 'Countryland',
       },
+    });
+  });
+
+  it('should map ParcelQueryDto to QueryParcelCommand', () => {
+    const dto: ParcelQueryDto = {
+      description: 'A parcel containing books',
+      country: 'Countryland',
+    };
+
+    const command = mapper.mapToQueryCommand(dto);
+
+    expect(command).toEqual({
+      description: 'A parcel containing books',
+      country: 'Countryland',
     });
   });
 });
