@@ -103,7 +103,9 @@ describe('ParcelRepository', () => {
   });
 
   it('should find all parcels, estonian ones first', async () => {
-    const query: QueryParcelCommand = {};
+    const query: QueryParcelCommand = {
+      stockKeepingUnit: 'SKU',
+    };
     const estoniaResults: ParcelEntity[] = [
       {
         id: 1,
@@ -164,6 +166,7 @@ describe('ParcelRepository', () => {
     expect(parcelEntityRepository.find).toHaveBeenCalledWith({
       where: {
         country: 'Estonia',
+        stockKeepingUnit: 'SKU',
       },
       order: {
         deliveryDate: 'ASC',
@@ -173,6 +176,7 @@ describe('ParcelRepository', () => {
     expect(parcelEntityRepository.find).toHaveBeenCalledWith({
       where: {
         country: Not('Estonia'),
+        stockKeepingUnit: 'SKU',
       },
       order: {
         deliveryDate: 'ASC',

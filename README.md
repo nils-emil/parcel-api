@@ -36,7 +36,7 @@ Small project built with [Nest](https://github.com/nestjs/nest) framework.
 ## Existing features & design choices
 
 * Health check endpoint at /api/health that returns 200 OK.
-    - Can be used for Kubernetes liveness and readiness probes.
+    - Can be used for Kubernetes liveliness and readiness probes.
     - Can be used for monitoring tools to check if the application is up and running.
 * Project structure - it's packaged by feature and inside that by layer
     - The application layer represents the controllers and handles mapping the user request to business logic.

@@ -41,14 +41,17 @@ export class ParcelRepository {
   }
 
   async findAllOrderEstoniaFirst(query: QueryParcelCommand): Promise<Parcel[]> {
-    let baseCriteria = {};
+    let where = {};
     if (query.description) {
-      baseCriteria = { description: Like(`%${query.description}%`) };
+      where = { description: Like(`%${query.description}%`) };
+    }
+    if (query.stockKeepingUnit) {
+      where = { ...where, stockKeepingUnit: query.stockKeepingUnit };
     }
     const deliveriesToEstonia: ParcelEntity[] =
       await this.parcelEntityRepository.find({
         where: {
-          ...baseCriteria,
+          ...where,
           country: ESTONIA,
         },
         order: {
@@ -58,7 +61,7 @@ export class ParcelRepository {
     const otherDeliveries: ParcelEntity[] =
       await this.parcelEntityRepository.find({
         where: {
-          ...baseCriteria,
+          ...where,
           country: Not(ESTONIA),
         },
         order: {
